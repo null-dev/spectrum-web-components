@@ -378,7 +378,7 @@ class SpectrumProcessor {
         const result = [];
 
         const startsWithHost = re`^${this.component.hostSelector}`;
-        const hasHost = re`${this.component.hostSelector}(?![-])`;
+        const hasHost = re`${this.component.hostSelector}(?![a-zA-Z\-])`;
         const startsWithDir = new RegExp(/\[dir\=/);
         const selectorTransform = this.selectorTransform;
         let skipAll = false;
@@ -394,20 +394,28 @@ class SpectrumProcessor {
         if (!skipAll) {
             for (let selector of rule.selectors) {
                 if (startsWithDir.test(selector)) {
+                    // If [dir] but no `${hostSelector}` prepend one to the `[dir]`
                     if (!hasHost.test(selector)) {
                         selector = `${this.component.hostSelector}${selector}`;
-                    } else if (selector.search(/\[dir\=ltr\]/) > -1) {
-                        selector = selector.replace('[dir=ltr] ', '');
-                        selector = selector.replace(
-                            hasHost,
-                            `${this.component.hostSelector}[dir=ltr]`
-                        );
-                    } else if (selector.search(/\[dir\=rtl\]/) > -1) {
-                        selector = selector.replace('[dir=rtl] ', '');
-                        selector = selector.replace(
-                            hasHost,
-                            `${this.component.hostSelector}[dir=rtl]`
-                        );
+                    } else {
+                        const mutateSelector = (dir) => {
+                            selector = selector.replace(`[dir=${dir}] `, '');
+                            // If the host selector is in the first selector, make sure it is moved to the front of it...
+                            if (hasHost.test(selector.split(' ')[0])) {
+                                selector = selector.replace(hasHost, '');
+                                selector = `${this.component.hostSelector}[dir=${dir}]${selector}`;
+                            } else {
+                                selector = selector.replace(
+                                    hasHost,
+                                    `${this.component.hostSelector}[dir=${dir}]`
+                                );
+                            }
+                        };
+                        if (selector.search(/\[dir\=ltr\]/) > -1) {
+                            mutateSelector('ltr');
+                        } else {
+                            mutateSelector('rtl');
+                        }
                     }
                 }
                 if (!startsWithHost.test(selector)) {
