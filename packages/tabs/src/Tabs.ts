@@ -65,9 +65,9 @@ export class Tabs extends Focusable {
         if (value === oldValue) {
             return;
         }
-        this.updateCheckedState(value);
 
         this._selected = value;
+        this.shouldUpdateCheckedState();
         this.requestUpdate('selected', oldValue);
     }
 
@@ -134,7 +134,7 @@ export class Tabs extends Focusable {
      * This will force apply the focus visible styling.
      * It should always do so when this styling is already applied.
      */
-    public shouldApplyFocusVisible = false;
+    private shouldApplyFocusVisible = false;
 
     private manageFocusinType = (): void => {
         if (this.shouldApplyFocusVisible) {
@@ -227,38 +227,44 @@ export class Tabs extends Focusable {
     }
 
     private onSlotChange(): void {
-        this.updateCheckedState(this.selected);
         this.tabs = [...this.querySelectorAll('[role="tab"]')] as Tab[];
+        this.shouldUpdateCheckedState();
     }
 
-    private updateCheckedState(value: string): void {
-        const previousChecked = this.querySelectorAll('[selected]');
+    private shouldUpdateCheckedState(): void {
+        setTimeout(this.updateCheckedState);
+    }
 
-        previousChecked.forEach((element) => {
+    private updateCheckedState = (): void => {
+        if (!this.tabs.length) {
+            this.tabs = [...this.querySelectorAll('[role="tab"]')] as Tab[];
+        }
+        this.tabs.forEach((element) => {
             element.removeAttribute('selected');
         });
 
-        if (value.length) {
-            const currentChecked = this.querySelector(`[value="${value}"]`);
+        if (this.selected) {
+            const currentChecked = this.tabs.find(
+                (el) => el.value === this.selected
+            );
 
             if (currentChecked) {
                 currentChecked.setAttribute('selected', '');
             } else {
                 this.selected = '';
             }
-        }
-        if (!this.selected) {
-            const firstTab = this.querySelector('[role="tab"]');
+        } else {
+            const firstTab = this.tabs[0];
             if (firstTab) {
                 firstTab.setAttribute('tabindex', '0');
             }
         }
 
         this.updateSelectionIndicator();
-    }
+    };
 
     private updateSelectionIndicator = async (): Promise<void> => {
-        const selectedElement = this.querySelector('[selected]') as Tab;
+        const selectedElement = this.tabs.find((el) => el.selected);
         if (!selectedElement) {
             this.selectionIndicatorStyle = `transform: translateX(0px) scaleX(0) scaleY(0);`;
             return;

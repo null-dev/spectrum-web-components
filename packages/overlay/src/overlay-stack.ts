@@ -13,6 +13,7 @@ governing permissions and limitations under the License.
 import { ActiveOverlay } from './ActiveOverlay.js';
 import { OverlayOpenDetail } from './overlay-types';
 import { OverlayTimer } from './overlay-timer';
+import '../active-overlay.js';
 
 function isLeftClick(event: MouseEvent): boolean {
     return event.button === 0;
@@ -57,6 +58,7 @@ export class OverlayStack {
             #actual {
                 position: relative;
                 z-index: 0;
+                min-height: 100vh;
             }
             #holder {
                 display: flex;
@@ -169,7 +171,6 @@ export class OverlayStack {
             topOverlay.obscure();
         }
 
-        await import('../active-overlay.js');
         const activeOverlay = ActiveOverlay.create(details);
         this.overlays.push(activeOverlay);
         document.body.appendChild(activeOverlay);
@@ -342,7 +343,9 @@ export class OverlayStack {
 
     private handleKeyUp = (event: KeyboardEvent): void => {
         if (event.key === 'Escape') {
+            const overlay = this.topOverlay as ActiveOverlay;
             this.closeTopOverlay();
+            overlay && overlay.trigger.focus();
         }
     };
 
