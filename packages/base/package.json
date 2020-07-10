@@ -1,0 +1,43 @@
+{
+    "name": "@spectrum-web-components/base",
+    "publishConfig": {
+        "access": "public"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/adobe/spectrum-web-components.git",
+        "directory": "packages/base"
+    },
+    "bugs": {
+        "url": "https://github.com/adobe/spectrum-web-components/issues"
+    },
+    "homepage": "https://adobe.github.io/spectrum-web-components/components/base",
+    "keywords": [
+        "spectrum css",
+        "web components",
+        "lit-element",
+        "lit-html"
+    ],
+    "version": "0.0.1",
+    "description": "",
+    "main": "src/index.js",
+    "module": "src/index.js",
+    "type": "module",
+    "files": [
+        "custom-elements.json",
+        "*.d.ts",
+        "*.js",
+        "*.js.map",
+        "/src/"
+    ],
+    "scripts": {
+        "test": "karma start --coverage"
+    },
+    "author": "",
+    "license": "Apache-2.0",
+    "dependencies": {
+        "lit-element": "^2.1.0",
+        "lit-html": "^1.0.0",
+        "tslib": "^2.0.0"
+    }
+}
