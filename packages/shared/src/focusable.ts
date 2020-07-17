@@ -59,6 +59,7 @@ export class Focusable extends FocusVisiblePolyfillMixin(SpectrumElement) {
     }
 
     public focus(): void {
+        console.log(this.focusElement);
         if (this.disabled) {
             return;
         }
