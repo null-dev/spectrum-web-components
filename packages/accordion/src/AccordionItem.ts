@@ -31,6 +31,9 @@ export class AccordionItem extends Focusable {
     @property({ type: String, reflect: true })
     public label = '';
 
+    @property({ type: Boolean, reflect: true })
+    public disabled = false;
+
     public get focusElement(): HTMLElement {
         /* istanbul ignore if */
         if (!this.shadowRoot) {
@@ -43,6 +46,27 @@ export class AccordionItem extends Focusable {
         super();
 
         this.addEventListener('keydown', this.onKeyDown);
+    }
+
+    public connectedCallback(): void {
+        super.connectedCallback();
+        if (!this.hasAttribute('role')) {
+            const queryRoleEvent = new CustomEvent(
+                'sp-accordion-item-query-role',
+                {
+                    bubbles: true,
+                    composed: true,
+                    detail: {
+                        role: '',
+                    },
+                }
+            );
+            this.dispatchEvent(queryRoleEvent);
+            this.setAttribute(
+                'role',
+                queryRoleEvent.detail.role || 'accordionitem'
+            );
+        }
     }
 
     private onKeyDown(event: KeyboardEvent): void {

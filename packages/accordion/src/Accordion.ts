@@ -15,7 +15,6 @@ import {
     SpectrumElement,
     CSSResultArray,
     TemplateResult,
-    PropertyValues,
     property,
 } from '@spectrum-web-components/base';
 
@@ -31,15 +30,100 @@ export class Accordion extends SpectrumElement {
         return [styles];
     }
 
+    public accordionItems = [] as Element[];
+    public focusedItemIndex = 0;
+    public focusInItemIndex = 0;
+
     /**
      * Allows multiple accordion items to be opened at the same time
      */
     @property({ type: Boolean, reflect: true, attribute: 'allow-multiple' })
     public allowMultiple = false;
 
-    protected firstUpdated(changes: PropertyValues): void {
-        super.firstUpdated(changes);
+    /**
+     * Hide this getter from web-component-analyzer until
+     * https://github.com/runem/web-component-analyzer/issues/131
+     * has been addressed.
+     *
+     * @private
+     */
+    public get childRole(): string {
+        return this.getAttribute('role') === 'accordion'
+            ? 'accordionitem'
+            : 'option';
+    }
+
+    public constructor() {
+        super();
+        this.handleKeydown = this.handleKeydown.bind(this);
+        this.startListeningToKeyboard = this.startListeningToKeyboard.bind(
+            this
+        );
+        this.stopListeningToKeyboard = this.stopListeningToKeyboard.bind(this);
+        this.addEventListener('focusin', this.startListeningToKeyboard);
+        this.addEventListener('focusout', this.stopListeningToKeyboard);
         this.addEventListener('sp-accordion-item-toggle', this.onToggle);
+    }
+
+    public focus(): void {
+        if (this.accordionItems.length === 0) {
+            return;
+        }
+
+        const focusInItem = this.accordionItems[
+            this.focusInItemIndex
+        ] as AccordionItem;
+        this.focusedItemIndex = this.focusInItemIndex;
+        focusInItem.focus();
+    }
+
+    public startListeningToKeyboard(): void {
+        if (this.accordionItems.length === 0) {
+            return;
+        }
+        this.addEventListener('keydown', this.handleKeydown);
+    }
+
+    public stopListeningToKeyboard(): void {
+        this.removeEventListener('keydown', this.handleKeydown);
+    }
+
+    public handleKeydown(event: KeyboardEvent): void {
+        const { code } = event;
+        console.log(code);
+        if (code === 'Tab') {
+            this.prepareToCleanUp();
+            return;
+        }
+        if (code !== 'ArrowDown' && code !== 'ArrowUp') {
+            return;
+        }
+        event.preventDefault();
+        const direction = code === 'ArrowDown' ? 1 : -1;
+        console.log(code);
+        this.focusAccordionItemByOffset(direction);
+    }
+
+    public focusAccordionItemByOffset(offset: number): void {
+        const focusedItem = this.accordionItems[
+            this.focusedItemIndex
+        ] as AccordionItem;
+        this.focusedItemIndex =
+            (this.accordionItems.length + this.focusedItemIndex + offset) %
+            this.accordionItems.length;
+        let itemToFocus = this.accordionItems[
+            this.focusedItemIndex
+        ] as AccordionItem;
+        while (itemToFocus.disabled) {
+            this.focusedItemIndex =
+                (this.accordionItems.length + this.focusedItemIndex + offset) %
+                this.accordionItems.length;
+            itemToFocus = this.accordionItems[
+                this.focusedItemIndex
+            ] as AccordionItem;
+        }
+        itemToFocus.focus();
+        focusedItem.tabIndex = -1;
     }
 
     protected render(): TemplateResult {
@@ -63,6 +147,95 @@ export class Accordion extends SpectrumElement {
             });
         }
 
-        target.open = !target.open;
+        target.open = true; //!target.open;
     }
+
+    public updateSelectedItemIndex(): void {
+        let index = this.accordionItems.length - 1;
+        let item = this.accordionItems[index] as AccordionItem;
+        while (index && item && !item.open) {
+            index -= 1;
+            item = this.accordionItems[index] as AccordionItem;
+        }
+        index = Math.max(index, 0);
+        this.focusedItemIndex = index;
+        this.focusInItemIndex = index;
+    }
+
+    private prepareToCleanUp(): void {
+        document.addEventListener(
+            'focusout',
+            () => {
+                requestAnimationFrame(() => {
+                    /* istanbul ignore if */
+                    if (this.accordionItems.length === 0) {
+                        return;
+                    }
+                    if (this.querySelector('[selected]')) {
+                        const itemToBlur = this.accordionItems[
+                            this.focusInItemIndex
+                        ] as AccordionItem;
+                        itemToBlur.tabIndex = -1;
+                    }
+                    this.updateSelectedItemIndex();
+                    const itemToFocus = this.accordionItems[
+                        this.focusInItemIndex
+                    ] as AccordionItem;
+                    itemToFocus.tabIndex = 0;
+                });
+            },
+            { once: true }
+        );
+    }
+
+    private prepItems = (): void => {
+        this.accordionItems = [
+            ...this.querySelectorAll(`[role="${this.childRole}"]`),
+        ];
+        if (!this.accordionItems || this.accordionItems.length === 0) {
+            return;
+        }
+        this.updateSelectedItemIndex();
+        const focusInItem = this.accordionItems[
+            this.focusInItemIndex
+        ] as AccordionItem;
+        focusInItem.tabIndex = 0;
+    };
+
+    protected firstUpdated(): void {
+        this.tabIndex = 0;
+    }
+
+    public connectedCallback(): void {
+        super.connectedCallback();
+        if (!this.hasAttribute('role')) {
+            const queryRoleEvent = new CustomEvent('sp-accordion-query-role', {
+                bubbles: true,
+                composed: true,
+                detail: {
+                    role: '',
+                },
+            });
+            this.dispatchEvent(queryRoleEvent);
+            this.setAttribute(
+                'role',
+                queryRoleEvent.detail.role || 'accordion'
+            );
+        }
+        if (!this.observer) {
+            this.observer = new MutationObserver(this.prepItems);
+        }
+        this.observer.observe(this, { childList: true, subtree: true });
+        this.updateComplete.then(() => this.prepItems());
+    }
+
+    public disconnectedCallback(): void {
+        /* istanbul ignore else */
+        if (this.observer) {
+            this.observer.disconnect();
+        }
+        super.disconnectedCallback();
+    }
+
+    private observer?: MutationObserver;
 }
