@@ -61,7 +61,11 @@ export class DropdownBase extends Focusable {
     }
 
     @query('#button')
-    public button?: HTMLButtonElement;
+    public button!: HTMLButtonElement;
+
+    public get target(): HTMLButtonElement | this {
+        return this.button;
+    }
 
     @property({ type: Boolean, reflect: true })
     public disabled = false;
@@ -123,10 +127,6 @@ export class DropdownBase extends Focusable {
     }
 
     public get focusElement(): HTMLElement {
-        /* istanbul ignore if */
-        if (typeof this.button === 'undefined') {
-            return this;
-        }
         if (this.open && this.optionsMenu) {
             return this.optionsMenu;
         }
@@ -138,10 +138,6 @@ export class DropdownBase extends Focusable {
     }
 
     public onButtonBlur(): void {
-        /* istanbul ignore if */
-        if (typeof this.button === 'undefined') {
-            return;
-        }
         this.button.removeEventListener('keydown', this.onKeydown);
     }
 
@@ -150,10 +146,6 @@ export class DropdownBase extends Focusable {
     }
 
     public onButtonFocus(): void {
-        /* istanbul ignore if */
-        if (typeof this.button === 'undefined') {
-            return;
-        }
         this.button.addEventListener('keydown', this.onKeydown);
     }
 
@@ -216,7 +208,7 @@ export class DropdownBase extends Focusable {
         this.open = false;
     }
 
-    private onOverlayClosed(): void {
+    protected onOverlayClosed(): void {
         this.close();
         /* istanbul ignore else */
         if (this.optionsMenu && this.placeholder) {
@@ -237,7 +229,6 @@ export class DropdownBase extends Focusable {
         /* istanbul ignore if */
         if (
             !this.popover ||
-            !this.button ||
             !this.optionsMenu ||
             this.optionsMenu.children.length === 0
         ) {
@@ -258,14 +249,9 @@ export class DropdownBase extends Focusable {
         }
 
         this.popover.append(this.optionsMenu);
-
-        // only use `this.offsetWidth` when Standard variant
-        const menuWidth = !this.quiet && `${this.offsetWidth}px`;
-        if (menuWidth) {
-            this.popover.style.setProperty('width', menuWidth);
-        }
+        this.sizePopover(this.popover);
         this.closeOverlay = await Overlay.open(
-            this.button,
+            this.target,
             'replace',
             this.popover,
             {
@@ -274,6 +260,14 @@ export class DropdownBase extends Focusable {
             }
         );
         this.menuStateResolver();
+    }
+
+    protected sizePopover(popover: HTMLElement): void {
+        // only use `this.offsetWidth` when Standard variant
+        const menuWidth = !this.quiet && `${this.offsetWidth}px`;
+        if (menuWidth) {
+            popover.style.setProperty('width', menuWidth);
+        }
     }
 
     private closeMenu(): void {
@@ -318,6 +312,7 @@ export class DropdownBase extends Focusable {
                 aria-haspopup="true"
                 aria-label=${ifDefined(this.label || undefined)}
                 id="button"
+                class="button"
                 @blur=${this.onButtonBlur}
                 @click=${this.onButtonClick}
                 @focus=${this.onButtonFocus}
@@ -343,13 +338,30 @@ export class DropdownBase extends Focusable {
     protected updated(changedProperties: PropertyValues): void {
         super.updated(changedProperties);
         if (changedProperties.has('value') && this.optionsMenu) {
-            const items = [
-                ...this.optionsMenu.querySelectorAll(
-                    `[role=${this.optionsMenu.childRole}]`
-                ),
-            ] as MenuItem[];
+            this.manageSelection();
+        }
+        if (changedProperties.has('disabled') && this.disabled) {
+            this.open = false;
+        }
+        if (changedProperties.has('open')) {
+            this.menuStatePromise = new Promise(
+                (res) => (this.menuStateResolver = res)
+            );
+            if (this.open) {
+                this.openMenu();
+            } else {
+                this.closeMenu();
+            }
+        }
+    }
+
+    private async manageSelection(): Promise<void> {
+        if (!this.optionsMenu) {
+            return;
+        }
+        if (this.optionsMenu.menuItems.length) {
             let selectedItem: MenuItem | undefined;
-            items.map((item) => {
+            this.optionsMenu.menuItems.map((item) => {
                 if (this.value === item.value && !item.disabled) {
                     selectedItem = item;
                 } else {
@@ -364,19 +376,11 @@ export class DropdownBase extends Focusable {
                 this.selectedItemText = '';
             }
             this.optionsMenu.updateSelectedItemIndex();
+            return;
         }
-        if (changedProperties.has('disabled') && this.disabled) {
-            this.open = false;
-        }
-        if (changedProperties.has('open')) {
-            this.menuStatePromise = new Promise(
-                (res) => (this.menuStateResolver = res)
-            );
-            if (this.open) {
-                this.openMenu();
-            } else {
-                this.closeMenu();
-            }
+        await this.optionsMenu.updateComplete;
+        if (this.optionsMenu.menuItems.length) {
+            this.manageSelection();
         }
     }
 

@@ -25,6 +25,7 @@ export interface LikeAnchorInterface {
     target?: '_blank' | '_parent' | '_self' | '_top';
     renderAnchor(options: {
         id: string;
+        className?: string;
         anchorContent?: TemplateResult | TemplateResult[];
     }): TemplateResult;
 }
@@ -47,16 +48,19 @@ export function LikeAnchor<T extends Constructor<UpdatingElement>>(
 
         public renderAnchor({
             id,
+            className,
             // prettier-ignore
             anchorContent = html`<slot></slot>`
         }: {
             id: string;
+            className?: string;
             anchorContent: TemplateResult | TemplateResult[];
         }): TemplateResult {
             // prettier-ignore
             return html
                 `<a
                     id=${id}
+                    class=${ifDefined(className)}
                     href=${ifDefined(this.href)}
                     download=${ifDefined(this.download)}
                     target=${ifDefined(this.target)}

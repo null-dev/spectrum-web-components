@@ -10,48 +10,42 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 
 THIS FILE IS MACHINE GENERATED. DO NOT EDIT */
-#button:after {
-    /* .spectrum-Button:after,
-   * .spectrum-LogicButton:after */
-    border-radius: calc(
-        var(
-                --spectrum-button-primary-border-radius,
-                var(--spectrum-alias-border-radius-large)
-            ) +
-            var(
-                --spectrum-alias-focus-ring-gap,
-                var(--spectrum-global-dimension-static-size-25)
-            )
-    );
-    content: '';
-    display: block;
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 0;
-    margin: calc(
-        var(
-                --spectrum-alias-focus-ring-gap,
-                var(--spectrum-global-dimension-static-size-25)
-            ) * -1
-    );
-    transition: box-shadow var(--spectrum-global-animation-duration-100, 0.13s)
+.button {
+    /* .spectrum-ActionButton,
+   * .spectrum-Button,
+   * .spectrum-ClearButton,
+   * .spectrum-FieldButton,
+   * .spectrum-LogicButton */
+    position: relative;
+    display: inline-flex;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+    margin: 0;
+    border-style: solid;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-appearance: button;
+    vertical-align: top;
+    transition: background var(--spectrum-global-animation-duration-100, 0.13s)
             ease-out,
-        margin var(--spectrum-global-animation-duration-100, 0.13s) ease-out;
-}
-#button:focus-visible:after {
-    /* .spectrum-Button.focus-ring:after,
-   * .spectrum-LogicButton.focus-ring:after */
-    margin: calc(
-        var(
-                --spectrum-alias-focus-ring-gap,
-                var(--spectrum-global-dimension-static-size-25)
-            ) * -2
+        border-color var(--spectrum-global-animation-duration-100, 0.13s)
+            ease-out,
+        color var(--spectrum-global-animation-duration-100, 0.13s) ease-out,
+        box-shadow var(--spectrum-global-animation-duration-100, 0.13s) ease-out;
+    text-decoration: none;
+    font-family: var(
+        --spectrum-alias-body-text-font-family,
+        var(--spectrum-global-font-family-base)
     );
-}
-#button {
-    /* .spectrum-Button */
+    line-height: 1.3;
+    -moz-user-select: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+    cursor: pointer; /* .spectrum-Button */
     border-width: var(
         --spectrum-button-primary-border-size,
         var(--spectrum-alias-border-size-thick)
@@ -89,21 +83,93 @@ THIS FILE IS MACHINE GENERATED. DO NOT EDIT */
         var(--spectrum-global-font-weight-bold)
     );
 }
-#button:active,
-#button:hover {
+.button:focus {
+    /* .spectrum-ActionButton:focus,
+   * .spectrum-Button:focus,
+   * .spectrum-ClearButton:focus,
+   * .spectrum-FieldButton:focus,
+   * .spectrum-LogicButton:focus */
+    outline: none;
+}
+.button::-moz-focus-inner {
+    /* .spectrum-ActionButton::-moz-focus-inner,
+   * .spectrum-Button::-moz-focus-inner,
+   * .spectrum-ClearButton::-moz-focus-inner,
+   * .spectrum-FieldButton::-moz-focus-inner,
+   * .spectrum-LogicButton::-moz-focus-inner */
+    border: 0;
+    border-style: none;
+    padding: 0;
+    margin-top: -2px;
+    margin-bottom: -2px;
+}
+:host([disabled]) .button {
+    /* .spectrum-ActionButton:disabled,
+   * .spectrum-Button:disabled,
+   * .spectrum-ClearButton:disabled,
+   * .spectrum-FieldButton:disabled,
+   * .spectrum-LogicButton:disabled */
+    cursor: default;
+}
+::slotted([slot='icon']) {
+    /* .spectrum-ActionButton .spectrum-Icon,
+   * .spectrum-Button .spectrum-Icon,
+   * .spectrum-ClearButton .spectrum-Icon,
+   * .spectrum-FieldButton .spectrum-Icon,
+   * .spectrum-LogicButton .spectrum-Icon */
+    max-height: 100%;
+    flex-shrink: 0;
+}
+.button:after {
+    /* .spectrum-Button:after,
+   * .spectrum-ClearButton:after,
+   * .spectrum-LogicButton:after */
+    border-radius: calc(
+        var(
+                --spectrum-button-primary-border-radius,
+                var(--spectrum-alias-border-radius-large)
+            ) +
+            var(
+                --spectrum-alias-focus-ring-gap,
+                var(--spectrum-global-dimension-static-size-25)
+            )
+    );
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    margin: calc(
+        var(
+                --spectrum-alias-focus-ring-gap,
+                var(--spectrum-global-dimension-static-size-25)
+            ) * -1
+    );
+    transition: box-shadow var(--spectrum-global-animation-duration-100, 0.13s)
+            ease-out,
+        margin var(--spectrum-global-animation-duration-100, 0.13s) ease-out;
+}
+.button:focus-visible:after {
+    /* .spectrum-Button.focus-ring:after,
+   * .spectrum-ClearButton.focus-ring:after,
+   * .spectrum-LogicButton.focus-ring:after */
+    margin: calc(
+        var(
+                --spectrum-alias-focus-ring-gap,
+                var(--spectrum-global-dimension-static-size-25)
+            ) * -2
+    );
+}
+.button:active,
+.button:hover {
     /* .spectrum-Button:active,
    * .spectrum-Button:hover */
     box-shadow: none;
 }
-slot[name='icon'] + #label {
-    /* .spectrum-Button .spectrum-Icon+.spectrum-Button-label */
-    margin-left: var(
-        --spectrum-button-primary-text-gap,
-        var(--spectrum-global-dimension-size-100)
-    );
-}
-#label + ::slotted([slot='icon']) {
-    /* .spectrum-Button .spectrum-Button-label+.spectrum-Icon */
+.button[dir='ltr'] #label + ::slotted([slot='icon']) {
+    /* [dir=ltr] .spectrum-Button .spectrum-Button-label+.spectrum-Icon */
     margin-left: calc(
         var(
                 --spectrum-button-primary-text-gap,
@@ -111,21 +177,64 @@ slot[name='icon'] + #label {
             ) / 2
     );
 }
+.button[dir='rtl'] #label + ::slotted([slot='icon']) {
+    /* [dir=rtl] .spectrum-Button .spectrum-Button-label+.spectrum-Icon */
+    margin-right: calc(
+        var(
+                --spectrum-button-primary-text-gap,
+                var(--spectrum-global-dimension-size-100)
+            ) / 2
+    );
+}
+.button[dir='ltr'] .spectrum-ActionButton .spectrum-Icon--sizeS:only-child {
+    /* [dir=ltr] .spectrum-ActionButton .spectrum-Icon--sizeS:only-child */
+    left: calc(
+        50% -
+            var(
+                --spectrum-actionbutton-icon-size,
+                var(--spectrum-alias-workflow-icon-size)
+            ) / 2
+    );
+}
+.button[dir='rtl'] .spectrum-ActionButton .spectrum-Icon--sizeS:only-child {
+    /* [dir=rtl] .spectrum-ActionButton .spectrum-Icon--sizeS:only-child */
+    right: calc(
+        50% -
+            var(
+                --spectrum-actionbutton-icon-size,
+                var(--spectrum-alias-workflow-icon-size)
+            ) / 2
+    );
+}
+.button[dir='ltr'] .spectrum-ActionButton-hold {
+    /* [dir=ltr] .spectrum-ActionButton-hold */
+    right: var(
+        --spectrum-actionbutton-hold-icon-padding-right,
+        var(--spectrum-global-dimension-size-40)
+    );
+}
+.button[dir='rtl'] .spectrum-ActionButton-hold {
+    /* [dir=rtl] .spectrum-ActionButton-hold */
+    left: var(
+        --spectrum-actionbutton-hold-icon-padding-right,
+        var(--spectrum-global-dimension-size-40)
+    );
+    transform: matrix(-1, 0, 0, 1, 0, 0);
+}
 #label {
     /* .spectrum-ActionButton-label,
    * .spectrum-Button-label */
     align-self: center;
     justify-self: center;
     text-align: center;
-    width: 100%;
 }
 #label:empty {
     /* .spectrum-ActionButton-label:empty,
    * .spectrum-Button-label:empty */
     display: none;
 }
-#button:focus-visible:after,
-#button.is-focused:after {
+.button:focus-visible:after,
+.button.is-focused:after {
     /* .spectrum-Button.focus-ring:after,
    * .spectrum-Button.is-focused:after,
    * .spectrum-LogicButton.focus-ring:after,
@@ -140,7 +249,7 @@ slot[name='icon'] + #label {
             var(--spectrum-alias-focus-ring-color)
         );
 }
-:host([variant='cta']) #button {
+:host([variant='cta']) .button {
     /* .spectrum-Button--cta */
     background-color: var(
         --spectrum-button-cta-background-color,
@@ -155,7 +264,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-static-white)
     );
 }
-:host([variant='cta']) #button:hover {
+:host([variant='cta']) .button:hover {
     /* .spectrum-Button--cta:hover */
     background-color: var(
         --spectrum-button-cta-background-color-hover,
@@ -170,7 +279,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-static-white)
     );
 }
-:host([variant='cta']) #button:focus-visible {
+:host([variant='cta']) .button:focus-visible {
     /* .spectrum-Button--cta.focus-ring */
     background-color: var(
         --spectrum-button-cta-background-color-key-focus,
@@ -185,7 +294,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-static-white)
     );
 }
-:host([variant='cta']) #button:active {
+:host([variant='cta']) .button:active {
     /* .spectrum-Button--cta:active */
     background-color: var(
         --spectrum-button-cta-background-color-down,
@@ -200,7 +309,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-static-white)
     );
 }
-:host([variant='cta'][disabled]) #button {
+:host([variant='cta'][disabled]) .button {
     /* .spectrum-Button--cta.is-disabled,
    * .spectrum-Button--cta:disabled */
     background-color: var(
@@ -216,7 +325,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-gray-500)
     );
 }
-:host([variant='primary']) #button {
+:host([variant='primary']) .button {
     /* .spectrum-Button--primary */
     background-color: var(
         --spectrum-button-primary-background-color,
@@ -231,7 +340,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-gray-800)
     );
 }
-:host([variant='primary']) #button:hover {
+:host([variant='primary']) .button:hover {
     /* .spectrum-Button--primary:hover */
     background-color: var(
         --spectrum-button-primary-background-color-hover,
@@ -246,7 +355,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-gray-50)
     );
 }
-:host([variant='primary']) #button:focus-visible {
+:host([variant='primary']) .button:focus-visible {
     /* .spectrum-Button--primary.focus-ring */
     background-color: var(
         --spectrum-button-primary-background-color-key-focus,
@@ -261,7 +370,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-gray-50)
     );
 }
-:host([variant='primary']) #button:active {
+:host([variant='primary']) .button:active {
     /* .spectrum-Button--primary:active */
     background-color: var(
         --spectrum-button-primary-background-color-down,
@@ -276,7 +385,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-gray-50)
     );
 }
-:host([variant='primary'][disabled]) #button {
+:host([variant='primary'][disabled]) .button {
     /* .spectrum-Button--primary.is-disabled,
    * .spectrum-Button--primary:disabled */
     background-color: var(
@@ -292,7 +401,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-gray-500)
     );
 }
-:host([variant='secondary']) #button {
+:host([variant='secondary']) .button {
     /* .spectrum-Button--secondary */
     background-color: var(
         --spectrum-button-secondary-background-color,
@@ -307,7 +416,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-gray-700)
     );
 }
-:host([variant='secondary']) #button:hover {
+:host([variant='secondary']) .button:hover {
     /* .spectrum-Button--secondary:hover */
     background-color: var(
         --spectrum-button-secondary-background-color-hover,
@@ -322,7 +431,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-gray-50)
     );
 }
-:host([variant='secondary']) #button:focus-visible {
+:host([variant='secondary']) .button:focus-visible {
     /* .spectrum-Button--secondary.focus-ring */
     background-color: var(
         --spectrum-button-secondary-background-color-key-focus,
@@ -337,7 +446,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-gray-50)
     );
 }
-:host([variant='secondary']) #button:active {
+:host([variant='secondary']) .button:active {
     /* .spectrum-Button--secondary:active */
     background-color: var(
         --spectrum-button-secondary-background-color-down,
@@ -352,7 +461,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-gray-50)
     );
 }
-:host([variant='secondary'][disabled]) #button {
+:host([variant='secondary'][disabled]) .button {
     /* .spectrum-Button--secondary.is-disabled,
    * .spectrum-Button--secondary:disabled */
     background-color: var(
@@ -368,7 +477,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-gray-500)
     );
 }
-:host([variant='negative']) #button {
+:host([variant='negative']) .button {
     /* .spectrum-Button--warning */
     background-color: var(
         --spectrum-button-warning-background-color,
@@ -383,7 +492,7 @@ slot[name='icon'] + #label {
         var(--spectrum-semantic-negative-color-text-small)
     );
 }
-:host([variant='negative']) #button:hover {
+:host([variant='negative']) .button:hover {
     /* .spectrum-Button--warning:hover */
     background-color: var(
         --spectrum-button-warning-background-color-hover,
@@ -398,7 +507,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-gray-50)
     );
 }
-:host([variant='negative']) #button:focus-visible {
+:host([variant='negative']) .button:focus-visible {
     /* .spectrum-Button--warning.focus-ring */
     background-color: var(
         --spectrum-button-warning-background-color-key-focus,
@@ -413,7 +522,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-gray-50)
     );
 }
-:host([variant='negative']) #button:active {
+:host([variant='negative']) .button:active {
     /* .spectrum-Button--warning:active */
     background-color: var(
         --spectrum-button-warning-background-color-down,
@@ -428,7 +537,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-gray-50)
     );
 }
-:host([variant='negative'][disabled]) #button {
+:host([variant='negative'][disabled]) .button {
     /* .spectrum-Button--warning.is-disabled,
    * .spectrum-Button--warning:disabled */
     background-color: var(
@@ -444,7 +553,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-gray-500)
     );
 }
-:host([variant='overBackground']) #button {
+:host([variant='overBackground']) .button {
     /* .spectrum-Button--overBackground */
     background-color: var(
         --spectrum-button-over-background-background-color,
@@ -459,8 +568,8 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-static-white)
     );
 }
-:host([variant='overBackground']) #button:focus-visible,
-:host([variant='overBackground']) #button:hover {
+:host([variant='overBackground']) .button:focus-visible,
+:host([variant='overBackground']) .button:hover {
     /* .spectrum-Button--overBackground.focus-ring,
    * .spectrum-Button--overBackground:hover */
     background-color: var(
@@ -473,7 +582,7 @@ slot[name='icon'] + #label {
     );
     color: inherit;
 }
-:host([variant='overBackground']) #button:focus-visible:after {
+:host([variant='overBackground']) .button:focus-visible:after {
     /* .spectrum-Button--overBackground.focus-ring:after */
     box-shadow: 0 0 0
         var(
@@ -485,7 +594,7 @@ slot[name='icon'] + #label {
             var(--spectrum-global-color-static-white)
         );
 }
-:host([variant='overBackground']) #button:active {
+:host([variant='overBackground']) .button:active {
     /* .spectrum-Button--overBackground:active */
     background-color: var(
         --spectrum-button-over-background-background-color-down,
@@ -497,7 +606,7 @@ slot[name='icon'] + #label {
     );
     color: inherit;
 }
-:host([variant='overBackground'][disabled]) #button {
+:host([variant='overBackground'][disabled]) .button {
     /* .spectrum-Button--overBackground.is-disabled,
    * .spectrum-Button--overBackground:disabled */
     background-color: var(
@@ -513,7 +622,7 @@ slot[name='icon'] + #label {
         hsla(0, 0%, 100%, 0.35)
     );
 }
-:host([variant='overBackground'][quiet]) #button {
+:host([variant='overBackground'][quiet]) .button {
     /* .spectrum-Button--overBackground.spectrum-Button--quiet,
    * .spectrum-ClearButton--overBackground */
     background-color: var(
@@ -529,8 +638,8 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-static-white)
     );
 }
-:host([variant='overBackground'][quiet]) #button:focus-visible,
-:host([variant='overBackground'][quiet]) #button:hover {
+:host([variant='overBackground'][quiet]) .button:focus-visible,
+:host([variant='overBackground'][quiet]) .button:hover {
     /* .spectrum-Button--overBackground.spectrum-Button--quiet.focus-ring,
    * .spectrum-Button--overBackground.spectrum-Button--quiet:hover,
    * .spectrum-ClearButton--overBackground.focus-ring,
@@ -548,12 +657,12 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-static-white)
     );
 }
-:host([variant='overBackground'][quiet]) #button:focus-visible {
+:host([variant='overBackground'][quiet]) .button:focus-visible {
     /* .spectrum-Button--overBackground.spectrum-Button--quiet.focus-ring,
    * .spectrum-ClearButton--overBackground.focus-ring */
     box-shadow: none;
 }
-:host([variant='overBackground'][quiet]) #button:focus-visible:after {
+:host([variant='overBackground'][quiet]) .button:focus-visible:after {
     /* .spectrum-Button--overBackground.spectrum-Button--quiet.focus-ring:after,
    * .spectrum-ClearButton--overBackground.focus-ring:after */
     box-shadow: 0 0 0
@@ -566,7 +675,7 @@ slot[name='icon'] + #label {
             var(--spectrum-global-color-static-white)
         );
 }
-:host([variant='overBackground'][quiet]) #button:active {
+:host([variant='overBackground'][quiet]) .button:active {
     /* .spectrum-Button--overBackground.spectrum-Button--quiet:active,
    * .spectrum-ClearButton--overBackground:active */
     background-color: var(
@@ -582,7 +691,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-static-white)
     );
 }
-:host([variant='overBackground'][quiet][disabled]) #button {
+:host([variant='overBackground'][quiet][disabled]) .button {
     /* .spectrum-Button--overBackground.spectrum-Button--quiet.is-disabled,
    * .spectrum-Button--overBackground.spectrum-Button--quiet:disabled,
    * .spectrum-ClearButton--overBackground.is-disabled,
@@ -600,7 +709,7 @@ slot[name='icon'] + #label {
         hsla(0, 0%, 100%, 0.15)
     );
 }
-:host([variant='primary'][quiet]) #button {
+:host([variant='primary'][quiet]) .button {
     /* .spectrum-Button--primary.spectrum-Button--quiet */
     background-color: var(
         --spectrum-button-quiet-primary-background-color,
@@ -615,7 +724,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-gray-800)
     );
 }
-:host([variant='primary'][quiet]) #button:hover {
+:host([variant='primary'][quiet]) .button:hover {
     /* .spectrum-Button--primary.spectrum-Button--quiet:hover */
     background-color: var(
         --spectrum-button-quiet-primary-background-color-hover,
@@ -630,7 +739,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-gray-900)
     );
 }
-:host([variant='primary'][quiet]) #button:focus-visible {
+:host([variant='primary'][quiet]) .button:focus-visible {
     /* .spectrum-Button--primary.spectrum-Button--quiet.focus-ring */
     background-color: var(
         --spectrum-button-quiet-primary-background-color-key-focus,
@@ -645,7 +754,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-gray-900)
     );
 }
-:host([variant='primary'][quiet]) #button:active {
+:host([variant='primary'][quiet]) .button:active {
     /* .spectrum-Button--primary.spectrum-Button--quiet:active */
     background-color: var(
         --spectrum-button-quiet-primary-background-color-down,
@@ -660,7 +769,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-gray-900)
     );
 }
-:host([variant='primary'][quiet][disabled]) #button {
+:host([variant='primary'][quiet][disabled]) .button {
     /* .spectrum-Button--primary.spectrum-Button--quiet.is-disabled,
    * .spectrum-Button--primary.spectrum-Button--quiet:disabled */
     background-color: var(
@@ -676,7 +785,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-gray-500)
     );
 }
-:host([variant='secondary'][quiet]) #button {
+:host([variant='secondary'][quiet]) .button {
     /* .spectrum-Button--secondary.spectrum-Button--quiet */
     background-color: var(
         --spectrum-button-quiet-secondary-background-color,
@@ -691,7 +800,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-gray-700)
     );
 }
-:host([variant='secondary'][quiet]) #button:hover {
+:host([variant='secondary'][quiet]) .button:hover {
     /* .spectrum-Button--secondary.spectrum-Button--quiet:hover */
     background-color: var(
         --spectrum-button-quiet-secondary-background-color-hover,
@@ -706,7 +815,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-gray-800)
     );
 }
-:host([variant='secondary'][quiet]) #button:focus-visible {
+:host([variant='secondary'][quiet]) .button:focus-visible {
     /* .spectrum-Button--secondary.spectrum-Button--quiet.focus-ring */
     background-color: var(
         --spectrum-button-quiet-secondary-background-color-key-focus,
@@ -721,7 +830,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-gray-800)
     );
 }
-:host([variant='secondary'][quiet]) #button:active {
+:host([variant='secondary'][quiet]) .button:active {
     /* .spectrum-Button--secondary.spectrum-Button--quiet:active */
     background-color: var(
         --spectrum-button-quiet-secondary-background-color-down,
@@ -736,7 +845,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-gray-800)
     );
 }
-:host([variant='secondary'][quiet][disabled]) #button {
+:host([variant='secondary'][quiet][disabled]) .button {
     /* .spectrum-Button--secondary.spectrum-Button--quiet.is-disabled,
    * .spectrum-Button--secondary.spectrum-Button--quiet:disabled */
     background-color: var(
@@ -752,7 +861,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-gray-500)
     );
 }
-:host([variant='negative'][quiet]) #button {
+:host([variant='negative'][quiet]) .button {
     /* .spectrum-Button--warning.spectrum-Button--quiet */
     background-color: var(
         --spectrum-button-quiet-warning-background-color,
@@ -767,7 +876,7 @@ slot[name='icon'] + #label {
         var(--spectrum-semantic-negative-color-text-small)
     );
 }
-:host([variant='negative'][quiet]) #button:hover {
+:host([variant='negative'][quiet]) .button:hover {
     /* .spectrum-Button--warning.spectrum-Button--quiet:hover */
     background-color: var(
         --spectrum-button-quiet-warning-background-color-hover,
@@ -782,7 +891,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-red-700)
     );
 }
-:host([variant='negative'][quiet]) #button:focus-visible {
+:host([variant='negative'][quiet]) .button:focus-visible {
     /* .spectrum-Button--warning.spectrum-Button--quiet.focus-ring */
     background-color: var(
         --spectrum-button-quiet-warning-background-color-key-focus,
@@ -797,7 +906,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-red-700)
     );
 }
-:host([variant='negative'][quiet]) #button:active {
+:host([variant='negative'][quiet]) .button:active {
     /* .spectrum-Button--warning.spectrum-Button--quiet:active */
     background-color: var(
         --spectrum-button-quiet-warning-background-color-down,
@@ -812,7 +921,7 @@ slot[name='icon'] + #label {
         var(--spectrum-global-color-red-700)
     );
 }
-:host([variant='negative'][quiet][disabled]) #button {
+:host([variant='negative'][quiet][disabled]) .button {
     /* .spectrum-Button--warning.spectrum-Button--quiet.is-disabled,
    * .spectrum-Button--warning.spectrum-Button--quiet:disabled */
     background-color: var(
