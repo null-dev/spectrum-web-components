@@ -378,6 +378,7 @@ class SpectrumProcessor {
         const result = [];
 
         const startsWithHost = re`^${this.component.hostSelector}`;
+        const startsWithModifier = re`^.is-`;
         const hasHost = re`${this.component.hostSelector}(?![-])`;
         const startsWithDir = new RegExp(/\[dir\=/);
         const selectorTransform = this.selectorTransform;
@@ -410,7 +411,10 @@ class SpectrumProcessor {
                         );
                     }
                 }
-                if (!startsWithHost.test(selector)) {
+                if (
+                    !startsWithHost.test(selector) &&
+                    !startsWithModifier.test(selector)
+                ) {
                     // This selector does not match the component we are
                     // working on. Check to see if it matches an id
                     let skip = true;
